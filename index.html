@@ -154,10 +154,6 @@
         .body_containter li input {
             vertical-align:middle;
         }
-        .content {
-            display: inline-block;
-            width: 92%;
-        }
 
         .edit {
             outline-style: none;
@@ -182,7 +178,7 @@
             <ul id="app">
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
                     <input type="checkbox" @click="changeStatus(index)">
-                    <p class="content">{{item.title}}</p>
+                    <span>{{item.title}}</span>
                     <span class="iconfont iconSpan" style="float: right" @click="deleteItem(index)">&#xe64c;</span>
                 </li>
             </ul>
@@ -190,7 +186,7 @@
             <ul id="app">
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
                     <input type="checkbox" checked @click="changeStatus(index)">
-                    <p class="content">{{item.title}}</p>
+                    <span>{{item.title}}</span>
                     <span class="iconfont iconSpan" style="float: right" @click="deleteItem(index)">&#xe64c;</span>
                 </li>
             </ul>
