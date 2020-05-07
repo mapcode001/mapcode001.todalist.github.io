@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待办事项</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: rgb(185, 185, 185);
+        }
+
+        @font-face {
+            font-family: 'iconfont';
+            src: url('./font/iconfont.eot');
+            src: url('./font/iconfont.eot?#iefix') format('embedded-opentype'),
+                url('./font/iconfont.woff2') format('woff2'),
+                url('./font/iconfont.woff') format('woff'),
+                url('./font/iconfont.ttf') format('truetype'),
+                url('./font/iconfont.svg#iconfont') format('svg');
+        }
+
+        .iconfont {
+            font-family: "iconfont" !important;
+            /* font-size: 16px; */
+            font-size: 0.25rem;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .iconSpan {
+            cursor: pointer;
+        }
+
+        @media screen and (min-width: 320px) {
+            html {
+                font-size: 40px;
+            }
+        }
+
+        @media screen and (min-width: 640px) {
+            html {
+                font-size: 64px;
+            }
+        }
+
+        @media screen and (min-width: 750px) {
+            html {
+                font-size: 70px;
+            }
+        }
+
+        /* 头部区域样式 */
+        .header {
+            width: 100%;
+            height: 0.8rem;
+            background-color: rgb(12, 129, 129);
+        }
+
+        .header_containter {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-width: 320px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* 头部中的标题样式 */
+        .biaoti {
+            position: absolute;
+            left: 0.1rem;
+            width: 22%;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            font-size: 0.45rem;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        /* 头部中的输入框样式 */
+        .add_input {
+            position: absolute;
+            right: 0.1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 70%;
+            height: 0.5rem;
+            outline: none;
+            border: none;
+            border-radius: 0.1rem;
+            box-shadow: 1px 1px 1px #ccc;
+            padding-left: 0.3rem;
+            font-size: 0.3rem;
+        }
+
+        .body_containter {
+            width: 100%;
+            height: 100%;
+            min-width: 320px;
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 0.1rem;
+            font-size: 0.25rem;
+            box-sizing:border-box;
+        }
+        .body_containter .status {
+            position: relative;
+            font-size: 0.4rem;
+            margin-top: 0.2rem;
+            /* background-color: pink; */
+        }
+
+        .status .count {
+            position: absolute;
+            right: 0.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.15rem;
+            color: #fff;
+            padding: 0.08rem;
+            border-radius: 45%;
+            background-color: rgb(12, 129, 129);
+        }
+
+        .body_containter li {
+            margin-top: 0.1rem;
+            padding: 0.1rem 0.2rem;
+            background-color: #fff;
+            border-radius: 0.08rem;
+        }
+
+        .undo {
+            border-left: 3px solid green;
+        }
+
+        .done {
+            border-left: 3px solid gray;
+            color: gray;
+        }
+
+        .body_containter li input {
+            vertical-align:middle;
+        }
+        .content {
+            display: inline-block;
+            width: 92%;
+        }
+
+        .edit {
+            outline-style: none;
+            border: none;
+            font-size: 0.25rem;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="header_containter">
+                <label for="add_input" class="biaoti">待办事项</label>
+                <input id="add_input" @keydown="addInput($event)" v-model='msg' class="add_input" type="text" placeholder="请输入要添加的待办事项" required="required" autocomplete="off">
+            </div>
+        </div>
+        <!-- 主体区域 -->
+        <div class="body_containter">
+            <h2 class="status">正在进行<span class="count">{{ todoCount }}</span></h2>
+            <ul id="app">
+                <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
+                    <input type="checkbox" @click="changeStatus(index)">
+                    <p class="content">{{item.title}}</p>
+                    <span class="iconfont iconSpan" style="float: right" @click="deleteItem(index)">&#xe64c;</span>
+                </li>
+            </ul>
+            <h2 class="status">已经完成 <span class="count">{{ doneCount }}</span></h2>
+            <ul id="app">
+                <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
+                    <input type="checkbox" checked @click="changeStatus(index)">
+                    <p class="content">{{item.title}}</p>
+                    <span class="iconfont iconSpan" style="float: right" @click="deleteItem(index)">&#xe64c;</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        Vue.component('edit-input', {
+            // props: ['title'],
+            template: `<input value="尝试" style="background-color: red;">`
+        })
+
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '',
+                todolistdata: '',
+                todoCount: 0,
+                doneCount: 0,
+                title: 'ok'
+            },
+
+            created: function() {
+                // 更新列表数据
+                this.updateData();
+            },
+
+            methods: {
+                // 添加待办事项
+                addInput:function(event) {
+                    if (event.keyCode === 13) {
+                        // 去除前后空格
+                        if (this.msg.trim()) {
+                            // 1.新添加的数据
+                            let newData = { title: this.msg.trim(), done: false };
+                            // 2.获取本地存储数据
+                            let todoData = this.getData();
+                            // 3.跟新本地存储
+                            todoData.unshift(newData);
+                            // 4.存储最新数据
+                            this.saveData(todoData);
+                            // 清空输入框中内容
+                            this.msg = "";
+                            // 更新数据列表
+                            this.updateData();
+                        }
+                    }
+                },
+
+                // 获取已经完成的本地存储
+                getData: function() {
+                    let todoData = localStorage.getItem("todolistdata");
+                    if (todoData !== null) {
+                        // 本地存储里面的数据是字符串格式的 但是我们需要的是对象格式的
+                        return JSON.parse(todoData);
+                    } else {
+                        return [];
+                    }
+                },
+
+                // 保存本地存储
+                saveData: function(data) {
+                    localStorage.setItem("todolistdata", JSON.stringify(data));
+                },
+
+                // 更新数据列表
+                updateData: function() {
+                    // 获取本地存储的数据数据
+                    this.todolistdata = this.getData();
+                    this.statusCount();
+                },
+
+                // 删除
+                deleteItem: function(index) {
+                    // 获取本地存储数据
+                    let localDate = this.getData();
+                    // 删除指定的数据
+                    localDate.splice(index, 1);
+                    // 重新存储数据
+                    this.saveData(localDate);
+                    // 跟新数据列表
+                    this.updateData();
+                },
+
+                // 更改事项状态
+                changeStatus: function(index) {
+                    // 获取本地存储数据
+                    let localData = this.getData();
+                    localData[index].done = !localData[index].done;
+                    // 重新存储数据
+                    this.saveData(localData);
+                    // 更新数据列表
+                    this.updateData();
+                    // 统计未完成数量事项和已完成事项数量
+                    this.statusCount();
+                },
+
+                // 统计未完成数量事项和已完成事项数量
+                statusCount: function() {
+                    let localData = this.getData();
+                    let todoCount = 0;
+                    let doneCount = 0;
+                    for (let i = 0; i < localData.length; i++) {
+                        if (localData[i].done === false) {
+                            todoCount++;
+                        } else {
+                            doneCount++;
+                        }
+                    }
+                    this.todoCount = todoCount;
+                    this.doneCount = doneCount;
+                },
+
+                edit: function(event) {
+                    console.log('1111');
+                    console.log(event.target.innerHTML);
+                    let tee = "尝试一下把";
+                    // event.target.innerHTML = "<input onblur='saveEdit($event)' class='edit' value='" + tee +"'>";
+                    event.target.innerHTML = `<input v-model=title/>`;
+                },
+
+                saveEdit: function(event) {
+                    console.log('999');
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
