@@ -42,6 +42,11 @@
 
         .iconSpan {
             cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0.5rem;
+
         }
 
         @media screen and (min-width: 320px) {
@@ -136,6 +141,7 @@
         }
 
         .body_containter li {
+            position: relative;
             margin-top: 0.1rem;
             padding: 0.1rem 0.2rem;
             background-color: #fff;
@@ -161,6 +167,8 @@
             font-size: 0.25rem;
             color: red;
         }
+
+
     </style>
 </head>
 <body>
@@ -175,19 +183,19 @@
         <!-- 主体区域 -->
         <div class="body_containter">
             <h2 class="status">正在进行<span class="count">{{ todoCount }}</span></h2>
-            <ul id="app">
+            <ul>
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
                     <input type="checkbox" @click="changeStatus(index)">
                     <span>{{item.title}}</span>
-                    <span class="iconfont iconSpan" style="float: right" @click="deleteItem(index)">&#xe64c;</span>
+                    <span class="iconfont iconSpan" @click="deleteItem(index)">&#xe64c;</span>
                 </li>
             </ul>
             <h2 class="status">已经完成 <span class="count">{{ doneCount }}</span></h2>
-            <ul id="app">
+            <ul>
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
                     <input type="checkbox" checked @click="changeStatus(index)">
                     <span>{{item.title}}</span>
-                    <span class="iconfont iconSpan" style="float: right" @click="deleteItem(index)">&#xe64c;</span>
+                    <span class="iconfont iconSpan"@click="deleteItem(index)">&#xe64c;</span>
                 </li>
             </ul>
         </div>
