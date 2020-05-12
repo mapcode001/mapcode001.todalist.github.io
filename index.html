@@ -51,7 +51,7 @@
 
         @media screen and (min-width: 320px) {
             html {
-                font-size: 40px;
+                font-size: 32px;
             }
         }
 
@@ -63,14 +63,14 @@
 
         @media screen and (min-width: 750px) {
             html {
-                font-size: 70px;
+                font-size: 75px;
             }
         }
 
         /* 头部区域样式 */
         .header {
             width: 100%;
-            height: 0.8rem;
+            height: 1rem;
             background-color: rgb(12, 129, 129);
         }
 
@@ -88,9 +88,9 @@
             position: absolute;
             left: 0.1rem;
             width: 22%;
-            height: 0.8rem;
-            line-height: 0.8rem;
-            font-size: 0.45rem;
+            height: 1rem;
+            line-height: 1rem;
+            font-size: 0.5rem;
             color: #fff;
             font-weight: 400;
         }
@@ -101,14 +101,14 @@
             right: 0.1rem;
             top: 50%;
             transform: translateY(-50%);
-            width: 70%;
-            height: 0.5rem;
+            width: 67%;
+            height: 0.6rem;
             outline: none;
             border: none;
             border-radius: 0.1rem;
             box-shadow: 1px 1px 1px #ccc;
             padding-left: 0.3rem;
-            font-size: 0.3rem;
+            font-size: 0.4rem;
         }
 
         .body_containter {
@@ -118,7 +118,7 @@
             max-width: 750px;
             margin: 0 auto;
             padding: 0 0.1rem;
-            font-size: 0.25rem;
+            font-size: 0.3rem;
             box-sizing:border-box;
         }
         .body_containter .status {
@@ -128,6 +128,7 @@
             /* background-color: pink; */
         }
 
+        /* 统计数量 */
         .status .count {
             position: absolute;
             right: 0.2rem;
@@ -148,26 +149,21 @@
             border-radius: 0.08rem;
         }
 
+        /* 待办事项的边框 */
         .undo {
             border-left: 3px solid green;
         }
 
+        /* 未完成事项的边框 */
         .done {
             border-left: 3px solid gray;
             color: gray;
         }
 
+        /* 列表前面的事项的状态 */
         .body_containter li input {
             vertical-align:middle;
         }
-
-        .edit {
-            outline-style: none;
-            border: none;
-            font-size: 0.25rem;
-            color: red;
-        }
-
 
     </style>
 </head>
@@ -202,11 +198,6 @@
     </div>
 
     <script type="text/javascript">
-        Vue.component('edit-input', {
-            // props: ['title'],
-            template: `<input value="尝试" style="background-color: red;">`
-        })
-
 
         var vm = new Vue({
             el: '#app',
