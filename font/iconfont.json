@@ -6,39 +6,25 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "11488039",
-      "name": "falling",
-      "font_class": "falling",
-      "unicode": "e750",
-      "unicode_decimal": 59216
+      "icon_id": "7548848",
+      "name": "减",
+      "font_class": "jian",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
     },
     {
-      "icon_id": "11488063",
-      "name": "left arrow",
-      "font_class": "leftarrow",
-      "unicode": "e755",
-      "unicode_decimal": 59221
+      "icon_id": "7549347",
+      "name": "完成",
+      "font_class": "RectangleCopy",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
     },
     {
-      "icon_id": "11488114",
-      "name": "rising",
-      "font_class": "rising",
-      "unicode": "e761",
-      "unicode_decimal": 59233
-    },
-    {
-      "icon_id": "11488115",
-      "name": "Right arrow",
-      "font_class": "Rightarrow",
-      "unicode": "e762",
-      "unicode_decimal": 59234
-    },
-    {
-      "icon_id": "14472271",
+      "icon_id": "7549831",
       "name": "删除",
-      "font_class": "shanchu",
-      "unicode": "e64c",
-      "unicode_decimal": 58956
+      "font_class": "RectangleCopy1",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
     }
   ]
 }

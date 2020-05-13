@@ -34,13 +34,13 @@
         .iconfont {
             font-family: "iconfont" !important;
             /* font-size: 16px; */
-            font-size: 0.25rem;
+            font-size: 0.35rem;
             font-style: normal;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        .iconSpan {
+        .delete_ico_span {
             cursor: pointer;
             position: absolute;
             top: 50%;
@@ -66,6 +66,13 @@
                 font-size: 75px;
             }
         }
+
+        @media screen and (min-width: 1070px) {
+            .erweima {
+                display: block!important;
+            }
+        }
+
 
 
         /* 头部区域样式 */
@@ -112,6 +119,7 @@
             font-size: 0.4rem;
         }
 
+        /* 存放列表的容器 */
         .body_containter {
             width: 100%;
             height: 100%;
@@ -122,11 +130,12 @@
             font-size: 0.3rem;
             box-sizing:border-box;
         }
+
+        /* 正在进行和已经完成的标题 */
         .body_containter .status {
             position: relative;
             font-size: 0.4rem;
             margin-top: 0.2rem;
-            /* background-color: pink; */
         }
 
         /* 统计数量 */
@@ -150,20 +159,51 @@
             border-radius: 0.08rem;
         }
 
+        /* 边框的样式和颜色 */
         /* 待办事项的边框 */
         .undo {
-            border-left: 3px solid green;
+            border-left: 3px solid rgb(223, 241, 58);
         }
 
         /* 未完成事项的边框 */
         .done {
-            border-left: 3px solid gray;
-            color: gray;
+            border-left: 3px solid green;
         }
 
-        /* 列表前面的事项的状态 */
-        .body_containter li input {
-            vertical-align:middle;
+        /* 列表前面的图标样式 */
+        .status_ico_span {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0.1rem;
+            cursor: pointer;
+        }
+        .todo_ico {
+            color: gray;
+        }
+        .done_ico {
+            color: green;
+            font-weight: 700;
+        }
+
+        /* 列表中文字 */
+        .list_content {
+            margin-left: 0.4rem;
+            width: 90%;
+            word-wrap:break-word;
+        }
+
+        /* 二维码样式 */
+        .erweima {
+            display: none;
+            position: fixed;
+            right: 10px;;
+            bottom: 10px;
+            width: 150px;
+            height: 150px;
+        }
+        .erweima img{
+            width: 100%;
         }
     </style>
 </head>
@@ -181,20 +221,25 @@
             <h2 class="status">正在进行<span class="count">{{ todoCount }}</span></h2>
             <ul>
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
-                    <input type="checkbox" @click="changeStatus(index)">
-                    <span>{{item.title}}</span>
-                    <span class="iconfont iconSpan" @click="deleteItem(index)">&#xe64c;</span>
+                    <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe6a1;</span>
+                    <p class="list_content">{{item.title}}</p>
+                    <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe6a9;</span>
                 </li>
             </ul>
             <h2 class="status">已经完成 <span class="count">{{ doneCount }}</span></h2>
             <ul>
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
-                    <input type="checkbox" checked @click="changeStatus(index)">
-                    <span>{{item.title}}</span>
-                    <span class="iconfont iconSpan"@click="deleteItem(index)">&#xe64c;</span>
+                    <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe6a1;</span>
+                    <p class="list_content">{{item.title}}</p>
+                    <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe6a9;</span>
                 </li>
             </ul>
         </div>
+    </div>
+
+    <!-- 二维码区域 -->
+    <div class="erweima">
+        <img src="images/erweima.png" alt="二维码">
     </div>
 
     <script type="text/javascript">
