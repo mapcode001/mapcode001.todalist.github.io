@@ -163,12 +163,12 @@
         /* 边框的样式和颜色 */
         /* 待办事项的边框 */
         .undo {
-            border-left: 3px solid gray;
+            border-left: 3px solid green;
         }
 
         /* 未完成事项的边框 */
         .done {
-            border-left: 3px solid green;
+            border-left: 3px solid gray;
         }
 
         /* 列表前面的图标样式 */
@@ -178,13 +178,13 @@
             transform: translateY(-50%);
             left: 0.1rem;
             cursor: pointer;
+            font-size: 0.3rem;
         }
         .todo_ico {
-            color: gray;
+            color: green;
         }
         .done_ico {
-            color: green;
-            font-weight: 700;
+            color: gray;
         }
 
         /* 列表中文字 */
@@ -202,6 +202,13 @@
             bottom: 100px;
             width: 150px;
             height: 150px;
+            background-color: rgb(178, 124, 0);
+        }
+        .erweima h3 {
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            color:#fff;
         }
         .erweima img{
             width: 100%;
@@ -222,17 +229,17 @@
             <h2 class="status">正在进行<span class="count">{{ todoCount }}</span></h2>
             <ul>
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
-                    <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe6a1;</span>
+                    <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe63e;</span>
                     <p class="list_content">{{item.title}}</p>
-                    <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe6a9;</span>
+                    <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
             <h2 class="status">已经完成 <span class="count">{{ doneCount }}</span></h2>
             <ul>
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
-                    <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe6a1;</span>
+                    <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe63d;</span>
                     <p class="list_content">{{item.title}}</p>
-                    <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe6a9;</span>
+                    <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
         </div>
@@ -240,6 +247,7 @@
 
     <!-- 二维码区域 -->
     <div class="erweima">
+        <h3>扫一扫，在手机上使用</h3>
         <img src="images/erweima.png" alt="二维码">
     </div>
 

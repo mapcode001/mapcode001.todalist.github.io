@@ -6,25 +6,25 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "7548848",
-      "name": "减",
-      "font_class": "jian",
-      "unicode": "e6a0",
-      "unicode_decimal": 59040
+      "icon_id": "2716513",
+      "name": "已勾选32",
+      "font_class": "yigouxuan",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
     },
     {
-      "icon_id": "7549347",
-      "name": "完成",
-      "font_class": "RectangleCopy",
-      "unicode": "e6a1",
-      "unicode_decimal": 59041
+      "icon_id": "2716516",
+      "name": "未勾选32",
+      "font_class": "weigouxuan",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
     },
     {
-      "icon_id": "7549831",
-      "name": "删除",
-      "font_class": "RectangleCopy1",
-      "unicode": "e6a9",
-      "unicode_decimal": 59049
+      "icon_id": "7009031",
+      "name": "trash",
+      "font_class": "trash",
+      "unicode": "e738",
+      "unicode_decimal": 59192
     }
   ]
 }
