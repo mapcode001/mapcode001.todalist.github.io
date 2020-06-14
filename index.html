@@ -230,7 +230,7 @@
             <ul>
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
                     <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe63e;</span>
-                    <p class="list_content">{{item.title}}</p>
+                    <p class="list_content"  @dblclick="edit">{{item.title}}</p>
                     <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -238,7 +238,7 @@
             <ul>
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
                     <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe63d;</span>
-                    <p class="list_content">{{item.title}}</p>
+                    <p class="list_content" @dblclick="edit" @keydown="saveEdit">{{item.title}}</p>
                     <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -252,7 +252,13 @@
     </div>
 
     <script type="text/javascript">
-
+        Vue.component('menu-item', {
+            // 在 JavaScript 中是驼峰式的
+            props: ['menuTitle'],
+            template: '<input value={{menuTitle}}>'
+        })
+// <!– 在html中是短横线方式的 -->
+// <menu-item menu-title=“nihao"></menu-item>
         var vm = new Vue({
             el: '#app',
             data: {
@@ -355,18 +361,48 @@
                 },
 
                 edit: function(event) {
-                    console.log('1111');
-                    console.log(event.target.innerHTML);
-                    let tee = "尝试一下把";
-                    // event.target.innerHTML = "<input onblur='saveEdit($event)' class='edit' value='" + tee +"'>";
-                    event.target.innerHTML = `<input v-model=title/>`;
+                    console.log("test");
+                    console.log(event.target);
+                    // 获取要修改的内容
+                    let editContent = event.target.innerHTML;
+                    // 创建输入框
+                    event.target.innerHTML = `<input type="text" value=${editContent} onkeydown='test()'>`;
+
                 },
 
                 saveEdit: function(event) {
                     console.log('999');
+                    if (event.keyCode === 13) {
+                        // 去除前后空格
+                        if (this.msg.trim()) {
+                            console.log("ok")
+                            // // 1.新添加的数据
+                            // let newData = { title: this.msg.trim(), done: false };
+                            // // 2.获取本地存储数据
+                            // let todoData = this.getData();
+                            // // 3.跟新本地存储
+                            // todoData.unshift(newData);
+                            // // 4.存储最新数据
+                            // this.saveData(todoData);
+                            // // 清空输入框中内容
+                            // this.msg = "";
+                            // // 更新数据列表
+                            // this.updateData();
+                        }
+                    }
                 }
             }
         })
+        
+        function test() {
+            console.log('输入了');
+            if (event.keyCode === 13) {
+                // 去除前后空格
+                console.log("输入了回车");
+                console.log(event.target.value);
+                console.log(event)
+            }
+        }
     </script>
 </body>
 
