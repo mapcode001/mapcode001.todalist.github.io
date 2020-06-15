@@ -1,13 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./js/vue.js"></script>
+    <style>
+        .hid {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <button >双击</button>
-    <input type="text" value="test" autofocus>
+    <div id="app">
+        <ul>
+            <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index">
+                <p @dblclick=change>{{item.title}}</p>
+                <input type="text" v-model="item.title" class="hid" @keyup.enter="changeSave">
+            </li>
+        </ul>
+        <ol>
+            <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index">
+                <p>{{item.title}}</p>
+                <input type="text" v-model="item.title" class="hid">
+            </li>
+        </ol>
+    </div>
+    <script>
+        let tt = [
+            {
+                done: false,
+                title: "daiban1"
+            }, {
+                done: true,
+                title: "daiban2"
+            }, {
+                done: false,
+                title: "daiban3"
+            }, {
+                done: true,
+                title: "daiban4"
+            }
+        ];
+        console.log(tt);
+        console.log(tt.filter(item => item.done === true));
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: true,
+                todolistdata: [
+                    {
+                        done: false,
+                        title: "daiban1"
+                    }, {
+                        done: true,
+                        title: "daiban2"
+                    }, {
+                        done: false,
+                        title: "daiban3"
+                    }, {
+                        done: true,
+                        title: "daiban4"
+                    }
+                ]
+            },
+            computed: {
+                doneListData: function() {
+                    return this.todolistdata.filter(item => item.done === true)
+                },
+                todoListData: function() {
+                    return this.todolistdata.filter(item => item.done === false)
+                }
+            },
+            methods: {
+                change: function(event) {
+                    if(this.flag) {
+                        this.flag = !this.flag;
+                        console.log("000");
+                        console.log(event.target);
+                        console.log(event.target.nextElementSibling)
+                        event.target.classList.toggle('hid');
+                        event.target.nextElementSibling.classList.toggle('hid');
+                        console.log(this.todolistdata);
+                        this.flag = !this.flag;
+                    } else {
+                        return
+                    }
+                    
+                    // event.target.classList.children[0].toggle('hid');
+                    // event.target.classList.children[0].toggle('hid');
+                },
+
+                changeSave: function(event) {
+                    console.log("111");
+                    console.log(event.target);
+                    console.log(event.target.previousElementSibling)
+                    event.target.classList.toggle('hid');
+                    event.target.previousElementSibling.classList.toggle('hid');
+                    console.log(this.todolistdata);
+                }
+            }
+        })
+    </script>
 </body>
 </html>

@@ -193,6 +193,16 @@
             width: 90%;
             word-wrap:break-word;
         }
+        .input_content {
+            margin-left: 0.4rem;
+            width: 88%;
+            font-size: 0.3rem;
+        }
+
+        /* 控制文本和输入框的隐藏 */
+        .hid {
+            display: none;
+        }
 
         /* 二维码样式 */
         .erweima {
@@ -231,6 +241,7 @@
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
                     <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe63e;</span>
                     <p class="list_content"  @dblclick="edit">{{item.title}}</p>
+                    <input type="text" v-model="item.title" class=" input_content hid" @keyup.enter="saveEdit">
                     <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -239,6 +250,7 @@
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
                     <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe63d;</span>
                     <p class="list_content" @dblclick="edit" @keydown="saveEdit">{{item.title}}</p>
+                    <input type="text" v-model="item.title" class="input_content hid">
                     <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -252,13 +264,6 @@
     </div>
 
     <script type="text/javascript">
-        Vue.component('menu-item', {
-            // 在 JavaScript 中是驼峰式的
-            props: ['menuTitle'],
-            template: '<input value={{menuTitle}}>'
-        })
-// <!– 在html中是短横线方式的 -->
-// <menu-item menu-title=“nihao"></menu-item>
         var vm = new Vue({
             el: '#app',
             data: {
@@ -266,7 +271,9 @@
                 todolistdata: '',
                 todoCount: 0,
                 doneCount: 0,
-                title: 'ok'
+                title: 'ok',
+                // 控制li > p是否可以被点击
+                flag: true
             },
 
             created: function() {
@@ -332,7 +339,7 @@
                 },
 
                 // 更改事项状态
-                changeStatus: function(index) {
+                changeStatus: function(index, status, event) {
                     // 获取本地存储数据
                     let localData = this.getData();
                     localData[index].done = !localData[index].done;
@@ -359,50 +366,33 @@
                     this.todoCount = todoCount;
                     this.doneCount = doneCount;
                 },
-
+                // 将li里面的p隐藏，li里面的input显示
                 edit: function(event) {
-                    console.log("test");
-                    console.log(event.target);
-                    // 获取要修改的内容
-                    let editContent = event.target.innerHTML;
-                    // 创建输入框
-                    event.target.innerHTML = `<input type="text" value=${editContent} onkeydown='test()'>`;
-
-                },
-
-                saveEdit: function(event) {
-                    console.log('999');
-                    if (event.keyCode === 13) {
-                        // 去除前后空格
-                        if (this.msg.trim()) {
-                            console.log("ok")
-                            // // 1.新添加的数据
-                            // let newData = { title: this.msg.trim(), done: false };
-                            // // 2.获取本地存储数据
-                            // let todoData = this.getData();
-                            // // 3.跟新本地存储
-                            // todoData.unshift(newData);
-                            // // 4.存储最新数据
-                            // this.saveData(todoData);
-                            // // 清空输入框中内容
-                            // this.msg = "";
-                            // // 更新数据列表
-                            // this.updateData();
-                        }
+                    if(this.flag) {
+                        this.flag = !this.flag;
+                        event.target.classList.toggle('hid');
+                        event.target.nextElementSibling.classList.toggle('hid');
+                        // 获取焦点
+                        event.target.nextElementSibling.focus();
+                        // 让文本处于选中状态
+                        // event.target.nextElementSibling.select();
+                    } else {
+                        return
                     }
+                },
+                // 隐藏input,显示p, 并保存数据到本地
+                saveEdit: function(event) {
+                    event.target.classList.toggle('hid');
+                    event.target.previousElementSibling.classList.toggle('hid')
+                    if(event.target.value.trim()) {
+                        console.log(event.target.value);
+                        this.saveData(this.todolistdata);
+                    }
+                    this.updateData();
+                    this.flag = !this.flag
                 }
             }
         })
-        
-        function test() {
-            console.log('输入了');
-            if (event.keyCode === 13) {
-                // 去除前后空格
-                console.log("输入了回车");
-                console.log(event.target.value);
-                console.log(event)
-            }
-        }
     </script>
 </body>
 
