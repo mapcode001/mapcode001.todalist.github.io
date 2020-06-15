@@ -241,7 +241,7 @@
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
                     <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe63e;</span>
                     <p class="list_content"  @dblclick="edit">{{item.title}}</p>
-                    <input type="text" v-model="item.title" class=" input_content hid" @keyup.enter="saveEdit">
+                    <input type="text" v-model="item.title" class=" input_content hid" @keyup.enter="saveEdit" @blur="saveEdit">
                     <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -250,7 +250,7 @@
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
                     <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe63d;</span>
                     <p class="list_content" @dblclick="edit" @keydown="saveEdit">{{item.title}}</p>
-                    <input type="text" v-model="item.title" class="input_content hid">
+                    <input type="text" v-model="item.title" class="input_content hid" @keyup.enter="saveEdit" @blur="saveEdit">
                     <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
