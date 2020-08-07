@@ -242,7 +242,7 @@
                 <li v-if="item.done === false" v-for="(item, index) in todolistdata" :key="index" class="undo">
                     <span class="iconfont status_ico_span todo_ico" @click="changeStatus(index)">&#xe63e;</span>
                     <p class="list_content"  @dblclick="edit">{{item.title}}</p>
-                    <input type="text" v-model="item.title" class=" input_content hid" @keyup.enter="saveEdit" @blur="saveEdit">
+                    <input type="text" v-model="item.title" class=" input_content hid" @keyup.enter="entryToBlur" @blur="saveEdit">
                     <span class="iconfont delete_ico_span" @click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -251,7 +251,7 @@
                 <li v-if="item.done === true" v-for="(item, index) in todolistdata" :key="index" class="done">
                     <span class="iconfont status_ico_span done_ico" @click="changeStatus(index)">&#xe63d;</span>
                     <p class="list_content" @dblclick="edit" @keydown="saveEdit">{{item.title}}</p>
-                    <input type="text" v-model="item.title" class="input_content hid" @keyup.enter="saveEdit" @blur="saveEdit">
+                    <input type="text" v-model="item.title" class="input_content hid" @keyup.enter="entryToBlur" @blur="saveEdit">
                     <span class="iconfont delete_ico_span ok"@click="deleteItem(index)">&#xe738;</span>
                 </li>
             </ul>
@@ -386,12 +386,17 @@
                     event.target.classList.toggle('hid');
                     event.target.previousElementSibling.classList.toggle('hid')
                     if(event.target.value.trim()) {
-                        console.log(event.target.value);
+                        // console.log(event.target.value);
                         this.saveData(this.todolistdata);
                     }
                     this.updateData();
                     this.flag = !this.flag
+                },
+                // 输入回车后，失去焦点
+                entryToBlur: function(event) {
+                    event.target.blur();
                 }
+
             }
         })
     </script>
